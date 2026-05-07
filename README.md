@@ -1,4 +1,4 @@
-# Flutter Examples Bundle
+# Flutter App Bundle
 
 This repository contains three distinct Flutter examples designed to help you bootstrap your mobile development journey. Each example is a standalone project that can be run independently or detached into its own repository.
 
@@ -15,7 +15,7 @@ This repository contains three distinct Flutter examples designed to help you bo
 
 ## 🚀 How to Run
 
-To run any of the examples, navigate into its directory and use the standard Flutter commands:
+To run any of the apps, navigate into its directory and use the standard Flutter commands:
 
 ### 1. Registration Example
 ```bash
