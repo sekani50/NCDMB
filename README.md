@@ -58,14 +58,6 @@ If you want to move one of these examples into its own separate folder or reposi
 
 ---
 
-## 🛠 Prerequisites
-
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) installed and configured.
-- [Android Studio](https://developer.android.com/studio) or [VS Code](https://code.visualstudio.com/) with Flutter extension.
-- A physical device or emulator/simulator.
-
----
-
 ## 🎨 Design Previews
 
 | Example | Design Focus |
@@ -75,4 +67,4 @@ If you want to move one of these examples into its own separate folder or reposi
 | **BMI Premium** | Premium UX & Custom Styles |
 
 ---
-*Happy Coding!* 🚀
+*Happy Coding and thanks for coming!* 🚀
