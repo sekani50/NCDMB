@@ -87,10 +87,17 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
       CurvedAnimation(parent: _animationController, curve: Curves.linear),
     )..addListener(() {
         setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {}); // Update UI when arrived
+        }
       });
 
-    _animationController.repeat();
+    _animationController.forward();
   }
+
+  bool get _hasArrived => _animationController.isCompleted;
 
   @override
   void dispose() {
@@ -225,18 +232,36 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
                     child: const Icon(Icons.arrow_back),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.circle, color: Colors.green, size: 10),
-                      const SizedBox(width: 8),
-                      Text('Live Tracking', style: GoogleFonts.outfit(fontWeight: FontWeight.bold)),
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    if (_hasArrived) {
+                      _animationController.reset();
+                      _animationController.forward();
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _hasArrived ? Icons.refresh : Icons.circle,
+                          color: _hasArrived ? Colors.blue : Colors.green,
+                          size: _hasArrived ? 16 : 10,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          _hasArrived ? 'Re-run' : 'Live Tracking',
+                          style: GoogleFonts.outfit(
+                            fontWeight: FontWeight.bold,
+                            color: _hasArrived ? Colors.blue : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(width: 44),
@@ -301,8 +326,11 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
                               style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             Text(
-                              'Arriving in 12 mins',
-                              style: GoogleFonts.outfit(color: Colors.green, fontWeight: FontWeight.w600),
+                              _hasArrived ? 'Arrived!' : 'Arriving in 12 mins',
+                              style: GoogleFonts.outfit(
+                                color: _hasArrived ? Colors.blue : Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -320,7 +348,7 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
                   const Divider(height: 40),
                   _buildLocationRow(Icons.my_location, 'Your Location', 'Maryland Interchange'),
                   const SizedBox(height: 12),
-                  _buildLocationRow(Icons.location_on, 'BRT Current Location', 'Approaching Maryland'),
+                  _buildLocationRow(Icons.location_on, 'BRT Current Location', _hasArrived ? 'At Maryland Interchange' : 'Approaching Maryland'),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,

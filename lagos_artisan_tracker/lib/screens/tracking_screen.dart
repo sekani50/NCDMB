@@ -247,11 +247,18 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     )..addListener(() {
         setState(() {}); // Rebuild to update marker position
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {}); // Update UI when arrived
+        }
       });
 
-    // Start the animation and loop it for simulation purposes
-    _animationController.repeat(reverse: false);
+    // Start the animation
+    _animationController.forward();
   }
+
+  bool get _hasArrived => _animationController.isCompleted;
 
   @override
   void dispose() {
@@ -355,23 +362,41 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
             ),
           ),
 
-          // Status Overlay
+          // Status Overlay / Re-run Button
           Positioned(
             top: 50,
             right: 20,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)],
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.circle, color: Colors.green, size: 12),
-                  const SizedBox(width: 8),
-                  Text('On the way', style: GoogleFonts.outfit(fontWeight: FontWeight.bold)),
-                ],
+            child: GestureDetector(
+              onTap: () {
+                if (_hasArrived) {
+                  _animationController.reset();
+                  _animationController.forward();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)],
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      _hasArrived ? Icons.refresh : Icons.circle,
+                      color: _hasArrived ? Colors.blue : Colors.green,
+                      size: _hasArrived ? 16 : 12,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      _hasArrived ? 'Re-run' : 'Live Tracking',
+                      style: GoogleFonts.outfit(
+                        fontWeight: FontWeight.bold,
+                        color: _hasArrived ? Colors.blue : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -400,7 +425,13 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(widget.artisan.name, style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 18)),
-                            Text('ETA: 18 mins', style: GoogleFonts.outfit(color: const Color(0xFF008751), fontWeight: FontWeight.bold)),
+                            Text(
+                              _hasArrived ? 'Arrived!' : 'ETA: 18 mins',
+                              style: GoogleFonts.outfit(
+                                color: _hasArrived ? Colors.blue : const Color(0xFF008751),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -416,7 +447,7 @@ class _TrackingScreenState extends State<TrackingScreen> with SingleTickerProvid
                   const Divider(height: 40),
                   _buildLocationInfo(Icons.my_location, 'Your Residence', 'Lekki Phase 1, Gate 2'),
                   const SizedBox(height: 16),
-                  _buildLocationInfo(Icons.person_pin_circle, 'Artisan Location', 'Moving...'),
+                  _buildLocationInfo(Icons.person_pin_circle, 'Artisan Location', _hasArrived ? 'At your residence' : 'Moving...'),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
