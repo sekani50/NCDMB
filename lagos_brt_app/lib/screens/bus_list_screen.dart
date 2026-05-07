@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lagos_brt_app/screens/tracking_screen.dart';
 import '../data/dummy_data.dart';
 import '../models/bus.dart';
 import '../widgets/bus_card.dart';

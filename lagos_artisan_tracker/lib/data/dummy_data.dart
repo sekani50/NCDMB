@@ -1,0 +1,52 @@
+import '../models/artisan.dart';
+
+final List<Artisan> dummyArtisans = [
+  Artisan(
+    id: 'ART-001',
+    name: 'Samuel Okon',
+    category: 'Plumber',
+    location: 'Lekki Phase 1',
+    rating: 4.8,
+    jobsCompleted: 156,
+    imagePath: 'assets/images/plumber.png',
+    description: 'Expert plumber with over 10 years experience in modern home installations and leak repairs.',
+    hourlyRate: 3500.0,
+    isBooked: true,
+  ),
+  Artisan(
+    id: 'ART-002',
+    name: 'Chidi Azu',
+    category: 'Electrician',
+    location: 'Ikeja G.R.A',
+    rating: 4.9,
+    jobsCompleted: 230,
+    imagePath: 'assets/images/electrician.png',
+    description: 'Certified electrician specializing in industrial and domestic wiring, and solar installations.',
+    hourlyRate: 4500.0,
+    isAvailable: true,
+  ),
+  Artisan(
+    id: 'ART-003',
+    name: 'Tunde Bakare',
+    category: 'Carpenter',
+    location: 'Surulere',
+    rating: 4.5,
+    jobsCompleted: 89,
+    imagePath: 'assets/images/plumber.png', // Reusing for dummy
+    description: 'Skilled carpenter for furniture making, roofing, and general wood works.',
+    hourlyRate: 3000.0,
+    isAvailable: false,
+  ),
+  Artisan(
+    id: 'ART-004',
+    name: 'Musa Ibrahim',
+    category: 'Plumber',
+    location: 'Yaba',
+    rating: 4.7,
+    jobsCompleted: 112,
+    imagePath: 'assets/images/plumber.png',
+    description: 'Specialist in bathroom fittings, drainage systems, and water heater repairs.',
+    hourlyRate: 3200.0,
+    isAvailable: true,
+  ),
+];
