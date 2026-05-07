@@ -14,8 +14,15 @@ class BusListScreen extends StatefulWidget {
 }
 
 class _BusListScreenState extends State<BusListScreen> {
+  final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
   String selectedTerminal = "All Terminals";
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   List<Bus> get filteredBuses {
     return dummyBuses.where((bus) {
@@ -55,25 +62,77 @@ class _BusListScreenState extends State<BusListScreen> {
             children: [
               Text('Filter by Terminal', style: GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: ["All Terminals", "Ikorodu Terminal", "Oshodi Interchange", "TBS Terminal", "Ajah Terminal"]
-                    .map((terminal) {
-                  final isSelected = selectedTerminal == terminal;
-                  return ChoiceChip(
-                    label: Text(terminal),
-                    selected: isSelected,
-                    onSelected: (selected) {
-                      setState(() => selectedTerminal = terminal);
-                      Navigator.pop(context);
-                    },
-                    selectedColor: const Color(0xFF008751),
-                    labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black),
+              StatefulBuilder(
+                builder: (context, setSheetState) {
+                  return Column(
+                    children: [
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: ["All Terminals", "Ikorodu Terminal", "Oshodi Interchange", "TBS Terminal", "Ajah Terminal"]
+                            .map((terminal) {
+                          final isSelected = selectedTerminal == terminal;
+                          return ChoiceChip(
+                            label: Text(terminal),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              setSheetState(() => selectedTerminal = terminal);
+                            },
+                            selectedColor: const Color(0xFF008751),
+                            labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 32),
+                      Row(
+                        children: [
+                          if (selectedTerminal != "All Terminals") ...[
+                            Expanded(
+                              child: SizedBox(
+                                height: 56,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedTerminal = "All Terminals";
+                                      searchQuery = "";
+                                      _searchController.clear();
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    foregroundColor: Colors.redAccent,
+                                    side: const BorderSide(color: Colors.redAccent),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  ),
+                                  child: const Text('Clear'),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                          ],
+                          Expanded(
+                            child: SizedBox(
+                              height: 56,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {});
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF008751),
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                                child: const Text('Apply'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   );
-                }).toList(),
+                },
               ),
-              const SizedBox(height: 20),
             ],
           ),
         );
@@ -119,6 +178,7 @@ class _BusListScreenState extends State<BusListScreen> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _searchController,
                           onChanged: (val) => setState(() => searchQuery = val),
                           decoration: InputDecoration(
                             hintText: 'Search routes...',

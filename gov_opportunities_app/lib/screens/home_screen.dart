@@ -13,9 +13,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
   String searchQuery = "";
   List<String> selectedFilters = [];
   String selectedState = "All States";
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   List<Program> get filteredPrograms {
     return dummyPrograms.where((p) {
@@ -48,6 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               selectedState = state;
               selectedFilters = filters;
+              if (state == "All States" && filters.isEmpty) {
+                _searchController.clear();
+                searchQuery = "";
+              }
             });
           },
         );
@@ -82,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: TextField(
+              controller: _searchController,
               onChanged: (val) => setState(() => searchQuery = val),
               decoration: InputDecoration(
                 hintText: 'Search programs or agencies...',

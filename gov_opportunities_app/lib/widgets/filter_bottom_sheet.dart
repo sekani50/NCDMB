@@ -56,7 +56,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 color: isSelected ? const Color(0xFF008751) : Colors.black87,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               side: BorderSide(
                 color: isSelected ? const Color(0xFF008751) : Colors.grey[300]!,
               ),
@@ -108,9 +110,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 borderSide: BorderSide.none,
               ),
             ),
-            items: ["All States", "Abuja", "Lagos", "Kano", "Rivers", "Kaduna"]
-                .map((s) => DropdownMenuItem(value: s, child: Text(s)))
-                .toList(),
+            items: [
+              "All States",
+              "Abuja",
+              "Lagos",
+              "Kano",
+              "Rivers",
+              "Kaduna",
+            ].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
             onChanged: (val) {
               setState(() => selectedState = val!);
             },
@@ -120,21 +127,54 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           const SizedBox(height: 24),
           _buildFilterSection('Mode', ['Physical', 'Virtual', 'Hybrid']),
           const Spacer(),
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              onPressed: () {
-                widget.onApply(selectedState, selectedFilters);
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF008751),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          Row(
+            children: [
+              if (selectedState != "All States" || selectedFilters.isNotEmpty) ...[
+                Expanded(
+                  child: SizedBox(
+                    height: 56,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedState = "All States";
+                          selectedFilters.clear();
+                        });
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.grey.shade100,
+                   
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        
+                        ),
+                      ),
+                      child: const Text('Clear Filters'),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+              ],
+              Expanded(
+                child: SizedBox(
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      widget.onApply(selectedState, selectedFilters);
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF008751),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Apply Filters'),
+                  ),
+                ),
               ),
-              child: const Text('Apply Filters'),
-            ),
+            ],
           ),
           const SizedBox(height: 20),
         ],
