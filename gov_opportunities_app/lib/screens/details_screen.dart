@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/program.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Program program;
   const DetailsScreen({super.key, required this.program});
+
+  Future<void> _launchUrl() async {
+    final Uri url = Uri.parse('https://ncdmb-training.netlify.app');
+    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +150,7 @@ class DetailsScreen extends StatelessWidget {
           width: double.infinity,
           height: 56,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: _launchUrl,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF008751),
               foregroundColor: Colors.white,
