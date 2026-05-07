@@ -12,7 +12,7 @@ class LagosArtisanApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lagos Artisan Tracker',
+      title: 'Artisan Tracker',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: const SplashScreen(),

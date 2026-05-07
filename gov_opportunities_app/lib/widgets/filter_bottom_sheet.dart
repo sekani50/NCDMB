@@ -143,10 +143,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.grey.shade100,
-                   
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                        
                         ),
                       ),
                       child: const Text('Clear Filters'),

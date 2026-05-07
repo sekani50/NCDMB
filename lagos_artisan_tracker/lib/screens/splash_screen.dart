@@ -32,16 +32,15 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
+              padding: const EdgeInsets.all(20),  
+              child: Image.asset(
+                'assets/images/logo.png',
+                height: 120,
               ),
-              child: Image.asset('assets/images/logo.png', height: 120),
             ),
             const SizedBox(height: 24),
             Text(
-              'Lagos Artisan',
+              'Artisan Tracker',
               style: GoogleFonts.outfit(
                 color: Colors.white,
                 fontSize: 32,

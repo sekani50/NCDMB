@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/artisan.dart';
 
 class TrackingScreen extends StatelessWidget {
@@ -83,9 +84,9 @@ class TrackingScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          _buildActionIcon(Icons.call),
+                          _buildActionIcon(Icons.call, () => _launchUrl('tel:+2348012345678')),
                           const SizedBox(width: 12),
-                          _buildActionIcon(Icons.message),
+                          _buildActionIcon(Icons.message, () => _launchUrl('sms:+2348012345678')),
                         ],
                       ),
                     ],
@@ -118,12 +119,22 @@ class TrackingScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionIcon(IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(color: Colors.grey[100], shape: BoxShape.circle),
-      child: Icon(icon, color: const Color(0xFF008751)),
+  Widget _buildActionIcon(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(color: Colors.grey[100], shape: BoxShape.circle),
+        child: Icon(icon, color: const Color(0xFF008751)),
+      ),
     );
+  }
+
+  Future<void> _launchUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) {
+      debugPrint('Could not launch $urlString');
+    }
   }
 
   Widget _buildLocationInfo(IconData icon, String title, String subtitle) {

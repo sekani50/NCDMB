@@ -12,7 +12,7 @@ class LagosBRTApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lagos BRT Commuter',
+      title: 'BRT Commuter',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: const SplashScreen(),

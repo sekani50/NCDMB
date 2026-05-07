@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Lagos, Nigeria', style: GoogleFonts.outfit(color: const Color(0xFF008751), fontWeight: FontWeight.bold)),
+                          Text('Nigeria', style: GoogleFonts.outfit(color: const Color(0xFF008751), fontWeight: FontWeight.bold)),
                           Text('Find an Artisan', style: GoogleFonts.outfit(fontSize: 28, fontWeight: FontWeight.bold)),
                         ],
                       ),
